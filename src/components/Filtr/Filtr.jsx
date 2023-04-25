@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../../redux/filterSlice';
+import { setFilter } from '../../redux/contacts/filterSlice';
 
 import { FitrTitle, FitrWrap, FitrInput } from './Filtr.styled';
 
@@ -13,7 +13,7 @@ export const Filter = () => {
     <FitrWrap>
       <FitrTitle>Find contact by name</FitrTitle>
 
-      <FitrInput type="text" onChange={changeFilter} />
+      <FitrInput type="text" onChange={changeFilter} placeholder="Enter name" />
     </FitrWrap>
   );
 };

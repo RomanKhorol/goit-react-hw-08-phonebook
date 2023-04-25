@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as contactsShelfAPI from '../redux/contactshelfAPI';
+import * as contactsShelfAPI from './contactshelfAPI';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',

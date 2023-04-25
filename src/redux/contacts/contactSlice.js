@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import {
-  fetchContacts,
-  addContact,
-  deleteContact,
-} from '../redux/contactsOperations';
+import { fetchContacts, addContact, deleteContact } from './contactsOperations';
 
 const contactsSlice = createSlice({
   name: 'contacts',

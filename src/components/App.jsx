@@ -1,53 +1,45 @@
-import { AddForm } from './AddAbonentForm/AddAbonentForm';
-import { ItemList } from './AbonentList/AbonentList';
-import { Filter } from './Filtr/Filtr';
+import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { lazy } from 'react';
+import { fecthCurrentUser } from '../redux/auth/authOperation';
+import { RestrictedRoute } from '../redux/RestrictedRoute';
+import { PrivateRoute } from 'redux/PrivateRoute';
+import SharedLayout from '../components/SharedLayout/SharedLayout';
+import { isRefreshing } from '../redux/selectors';
+
+const RegisterForm = lazy(() => import('../pages/register/Register'));
+const Login = lazy(() => import('../pages/login/Login'));
+const Contacts = lazy(() => import('../pages/contacts/Contacts'));
 
 export default function App() {
-  return (
-    <div
-      style={{
-        height: '100%',
-        padding: '15px',
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fecthCurrentUser());
+  }, [dispatch]);
 
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        fontSize: 40,
-        color: '#010101',
-      }}
-    >
-      <div
-        style={{
-          width: '300px',
-          border: '1px solid black',
-          borderRadius: '4px',
-        }}
-      >
-        <h1
-          style={{
-            paddingLeft: '40px',
-            fontSize: '40px',
-            margin: '0px',
-          }}
-        >
-          Phonebook
-        </h1>
-        <AddForm />
-      </div>
+  const steelRefresing = useSelector(isRefreshing);
 
-      <h2
-        style={{
-          margin: '0',
-          paddingLeft: '40px',
-          padding: '40px',
-          fontSize: 40,
-        }}
-      >
-        Contacts
-      </h2>
-      <Filter />
-      <ItemList />
-    </div>
+  return steelRefresing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Routes>
+      <Route path="/" element={<SharedLayout />}>
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute component={RegisterForm} redirectTo="/contacts" />
+          }
+        />
+        <Route
+          path="/login"
+          element={<RestrictedRoute component={Login} redirectTo="/contacts" />}
+        />
+        <Route
+          path="/contacts"
+          element={<PrivateRoute component={Contacts} redirectTo="/login" />}
+        />
+      </Route>
+    </Routes>
   );
 }
